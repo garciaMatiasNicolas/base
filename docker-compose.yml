@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: docker/react/Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=production
+    expose:
+      - 3000
+
+  nginx:
+    depends_on:
+      - react-app
+    build:
+      context: .
+      dockerfile: docker/react/Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    driver: bridge
